@@ -1,0 +1,16 @@
+[
+    {
+        "chunk_id": 1,
+        "start_word": 0,
+        "end_word": 465,
+        "text": "===== PAGE 1 ===== Artificial Neural Networks (ANN) - Simple Summary 1 Introduction Artificial Neural Networks (ANN) are models inspired by the human brain. They are used in Machine Learning to learn patterns from data and make pre- dictions. Idea: Instead of writing rules manually, the model learns from examples. 2 Basic Structure of ANN An ANN is made of: • Input Layer: Receives data Hidden Layer(s): Processes data Output Layer: Gives final result Example: If we want to predict if an email is spam: Input: words in the email Output: spam or not spam 3 Neuron (Perceptron) A neuron takes inputs, multiplies them by weights, adds bias, then applies a function. 3.1 Formula z = w1x1 + w2x2 + · · · + wnxn + b y = f(z) Where: ===== PAGE 2 ===== xi = inputs wi = weights • b = bias • f = activation function Simple Explanation: Weights = importance of each input Bias = extra adjustment Activation = decision function 4 Activation Functions They decide the output of a neuron. 4.1 Common Types 1. Step Function ∫1 if x ≥ 0 f(x) = 0 otherwise 2. Sigmoid 1 f(x) = 1 + e−x Output between 0 and 1. 3. ReLU f(x) = max(0, x) Rule: • Use ReLU in hidden layers (fast and simple) • Use Sigmoid for probability outputs 5 Forward Propagation This is how data moves in the network. Steps: 1. Input enters the network 2. Multiply by weights 3. Add bias 4. Apply activation function 5. Pass to next layer Example: ===== PAGE 3 ===== • Input = (2, 3) Weights = (0.5, 0.2) • Bias = 1 z = (2 × 0.5) + (3 × 0.2) + 1 = 2.6 Then apply activation. 6 Loss Function Measures how wrong the prediction is. Example (Mean Squared Error): ∑(ytrue − ypred)2 Loss = n Simple Idea: Small loss = good model Big loss = bad model 7 Backpropagation This is how the network learns. Steps: 1. Calculate error (loss) 2. Send error backward 3. Update weights Rule: • Adjust weights to reduce error 8 Gradient Descent Used to update weights. ∂Loss w = w − η mC Whr: n =leaa rat• Si on M es• ε ===== PAGE 4 ===== 9 Learning Rate Controls how fast the model learns. Too large → unstable Too small → slow learning 10 Overfitting vs Underfitting Overfitting: Model memorizes data • Performs badly on new data Underfitting: Model is too simple Cannot learn patterns 11 Example of ANN Usage • Image recognition • Speech recognition Recommendation systems (like your restaurant app idea!) 12 Final Summary • ANN learns from data like the human brain Uses neurons, weights, and activation functions • Forward propagation makes predictions • Backpropagation improves the model 4",
+        "document_name": "ML_ANN1.pdf"
+    },
+    {
+        "chunk_id": 2,
+        "start_word": 400,
+        "end_word": 465,
+        "text": "Overfitting: Model memorizes data • Performs badly on new data Underfitting: Model is too simple Cannot learn patterns 11 Example of ANN Usage • Image recognition • Speech recognition Recommendation systems (like your restaurant app idea!) 12 Final Summary • ANN learns from data like the human brain Uses neurons, weights, and activation functions • Forward propagation makes predictions • Backpropagation improves the model 4",
+        "document_name": "ML_ANN1.pdf"
+    }
+]

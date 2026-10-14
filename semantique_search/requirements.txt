@@ -1,0 +1,6 @@
+torch
+sentence-transformers
+paddleocr
+pymupdf
+psycopg2-binary
+ollama

@@ -1,0 +1,763 @@
+===== PAGE 1 =====
+
+A Comprehensive Survey of Retrieval-Augmented Generation (RAG): Evolution, Current
+Landscape and Future Directions
+Shailja Gupta (Carnegie Mellon University, USA)
+Rajesh Ranjan (Carnegie Mellon University, USA)
+Surya Narayan Singh (BIT Sindri, India)
+Abstract
+This paper presents a comprehensive study of Retrieval-Augmented Generation (RAG), tracing its
+evolution from foundational concepts to the current state of the art. RAG combines retrieval mechanisms
+with generative language models to enhance the accuracy of outputs, addressing key limitations of LLMs.
+The study explores the basic architecture of RAG, focusing on how retrieval and generation are integrated
+to handle knowledge-intensive tasks. A detailed review of the significant technological advancements in
+RAG is provided, including key innovations in retrieval-augmented language models and applications
+across various domains such as question-answering, summarization, and knowledge-based tasks.
+Recent research breakthroughs are discussed, highlighting novel methods for improving retrieval
+efficiency. Furthermore, the paper examines ongoing challenges such as scalability, bias, and ethical
+concerns in deployment. Future research directions are proposed, with a focus on improving the
+robustness of RAG models, expanding the scope of application of RAG models, and addressing societal
+implications. This survey aims to serve as a foundational resource for researchers and practitioners in
+understanding the potential of RAG and its trajectory in the field of natural language processing.
+NLLB-E5
+(Acharya et.
+RULE (Xia et.
+Al., 2024)
+al. 2024)
+Self-Route (Li
+METRAG
+et. al. 2024)
+(Gan et. al.
+2024)
+MemoRAG
+RAFT (Zhang
+(Qian et. al.,
+2024)
+et. al. 2024)
+SFR-RAG
+MK Summary
+(Nguyen et.
+(Mombaerts
+al., 2024)
+ét. al. 2024)
+CommunityK
+HyPA-RAG
+G-RAG
+(Kalra et. al.,
+(Chang et. al.
+2024)
+2024)
+Recent Trends
+RAPTOR
+LA-RAG (Li
+in RAG
+(Sarthi et. al.
+et. al., 2024)
+2024)
+Figure 1: Trends in RAG captured from recent research papers
+Keywords: Retrieval-Augmented Generation (RAG), Information Retrieval, Natural Language Processing
+(NLP), Artificial Intelligence (AI), Machine Learning (ML), Large Language Model (LLM).
+
+===== PAGE 2 =====
+
+Introduction
+1.1 Introduction of Natural Language Generation (NLG)
+Natural Language Processing (NLP) has become a pivotal domain within artificial intelligence (Al), with
+applications ranging from simple text classification to more complex tasks such as summarization,
+machine translation, and question answering. A particularly significant branch of NLP is Natural Language
+Generation (NLG), which focuses on the production of human-like language from structured or
+unstructured data. NLG's goal is to enable machines to generate coherent, relevant, and context-aware
+text, improving interactions between humans and machines (Gatt et. al. 2018). As Al evolves, the demand
+for more contextually aware and factually grounded generated content has increased, bringing about new
+challenges and innovations in NLG.
+Traditional NLG models, especially sequence-to-sequence architectures (Sutskever et al. 2014), have
+exhibited significant advancements in generating fluent and coherent text. However, these models tend to
+rely heavily on training data, often struggling when tasked with generating factually accurate or
+contextually rich content for queries that require knowledge beyond their training set. As a result, models
+like GPT (Radford et al. 2019) or BERT-based (Devlin et al. 2019) text generators are prone to
+hallucinations, where they produce plausible but incorrect or non-existent information (Ji et al. 2022). This
+limitation has prompted the exploration of hybrid models that combine retrieval mechanisms with
+generative capabilities to ensure both fluency and factual correctness in outputs. There has been a
+significant rise in several research papers in this field and several new methods across the RAG
+components have been proposed. Apart from new algorithms and methods, RAG has also seen steep
+adoption across various applications. However, there is a gap in a sufficient survey of this space tracking
+the evolution and recent changes in this space. The current survey intends to fill this gap.
+1.2 Overview of Retrieval-Augmented Generation (RAG)
+Retrieval-Augmented Generation (RAG) is an emerging hybrid architecture designed to address the
+limitations of pure generative models. RAG integrates two key components: (i) a retrieval mechanism,
+which retrieves relevant documents or information from an external knowledge source, and (ii) a
+generation module, which processes this information to generate human-like text (Lewis et al. 2020). This
+combination allows RAG models to not only generate fluent text but also ground their outputs in
+real-world, up-to-date data.
+The retrieval module in RAG typically leverages dense vector representations to identify relevant
+documents from large datasets, such as Wikipedia or proprietary databases. Once retrieved, these
+documents are passed to the generative module, often built using transformer-based architectures, to
+generate responses grounded in the retrieved knowledge. This methodology helps mitigate the
+hallucination problem and ensures that the generated text is more factual and contextually appropriate
+(Thakur et al. 2021). Over the period, RAG models have seen applications in various domains, including
+open-domain question answering (Karpukhin et al., 2020), conversational agents (Liu et al. 2021), and
+personalized recommendations.
+
+===== PAGE 3 =====
+
+User
+Ranked
+RAG
+Information
+Input
+Retriever
+Generator
+Output
+Information
+Retrieval
+External
+knowledge
+Figure 2: A basic flow of the RAG system along with its component
+1.3 Evolution of Hybrid Models in NLP
+Before the introduction of RAG, NLP models primarily relied on either retrieval or generation approaches,
+each with its own set of advantages and limitations. Retrieval-based systems, such as traditional
+information retrieval engines (Salton et al., 1975), efficiently provided relevant documents or snippets in
+response to a query but could not synthesize new information or present the results in a coherent
+narrative. On the other hand, purely generative models, which became popular with the rise of
+transformer architectures (Vaswani et al. 2017), offered fluency and creativity but often lacked factual
+accuracy.
+The development of hybrid systems combining retrieval and generation began to gain momentum as
+researchers recognized the complementary strengths of both approaches. Early efforts in hybrid modeling
+can be traced back to works like DrQA (Chen et al. 2017), which employed retrieval techniques to fetch
+relevant documents for question-answering tasks. However, the generative component in such systems
+was minimal, often limited to selecting text directly from the retrieved documents. Similarly, in models like
+Information Retrieval (Dai et al. 2019), retrieval was treated as distinct, independent components.
+The real innovation came with the realization that retrieval and generation could be tightly integrated.
+Models like REALM (Guu et al., 2020) represented a key milestone, as they trained the retrieval and
+generative components jointly, enabling better alignment between the retrieved information and the
+generated output. RAG (Lewis et al. 2020) further extended this paradigm by using dense passage
+retrieval (Karpukhin et al., 2020) to fetch relevant documents and transformers like BART (Lewis et al.,
+2020) for a generation. This architecture provided a more seamless integration of retrieval and
+generation, allowing the model to answer open-ended questions with both fluency and factual grounding.
+1.4 Importance of Factually Grounded Language Generation
+One of the main motivations for developing RAG is the increasing demand for factually accurate,
+contextually relevant, and up-to-date generated content. In many applications, such as customer service,
+medical diagnostics, or legal advisory systems, the need for reliable and grounded responses is
+paramount. Generative models that produce hallucinated or inaccurate information can lead to serious
+consequences, such as spreading misinformation or providing incorrect advice (Ji et al. 2022).
+
+===== PAGE 4 =====
+
+RAG models directly address these concerns by grounding their generative process in external,
+up-to-date knowledge sources. This grounding improves the factual accuracy of the output and enhances
+the relevance of responses by incorporating real-world data that is directly tied to the query. Additionally,
+RAG models are less likely to propagate biases present in static training data, as they can retrieve more
+diverse and balanced information from external sources
+1.5 Applications of RAG Models
+RAG models have been applied across a wide array of domains where factual accuracy and contextual
+understanding are critical. One of the most prominent applications is in open-domain question answering,
+where the model must generate answers based on a wide range of topics. RAG has proven effective in
+improving answer accuracy by retrieving relevant information and then generating responses grounded in
+that data (Izacard et. al. 2021). Models like Dense Passage Retrieval (DPR) (Karpukhin et al., 2020) and
+Fusion-in-Decoder (Izacard et. al. 2021) have been used to great effect in this context, showing significant
+improvements over traditional generative or retrieval-only models.
+In conversational Al, RAG models have enhanced the capabilities of dialogue systems by ensuring that
+responses are both coherent and grounded in factual information (Roller et al., 2020). For example,
+chatbots used in customer service can benefit from RAG's ability to retrieve specific details from product
+databases or documentation, leading to more accurate and useful responses for end-users.
+Other applications include medical diagnosis systems, where RAG can retrieve and integrate the latest
+research findings or patient-specific data to generate accurate diagnostic suggestions, and legal advisory
+systems, where the model can retrieve relevant case law or statutes to provide legally sound advice.
+Furthermore, RAG has found applications in personalized recommendation systems, where it can retrieve
+user preferences or past interactions and generate personalized suggestions.
+1.6 Challenges and Limitations of RAG
+Despite the promise of RAG models, several challenges need attention. The retrieval mechanism, while
+powerful, can still struggle with retrieving the most relevant documents, particularly when dealing with
+ambiguous queries or niche knowledge domains. The reliance on dense vector representations, such as
+those used in DPR, can sometimes lead to irrelevant or off-topic documents being retrieved. Efforts to
+refine retrieval techniques, including the incorporation of more sophisticated query expansion and
+contextual disambiguation, are needed to improve performance in these areas. The integration between
+retrieval and generation, while seamless in theory, can sometimes fail in practice. For instance, the
+generative module may not always effectively incorporate the retrieved information into its responses,
+leading to inconsistencies or incoherence between the retrieved facts and the generated text. Research
+into better alignment mechanisms, such as improved attention models or hierarchical fusion techniques,
+may help alleviate these issues (Izacard et. al. 2021). Additionally, the computational overhead of RAG
+models is a concern, as they require both a retrieval and a generation step for each query. This dual
+process can be resource-intensive, particularly for large-scale applications (Borgeaud et al. 2021).
+Techniques such as model pruning (Han et al. 2015) or knowledge distillation (Sanh et al., 2019) may
+offer ways to reduce the computational burden without sacrificing performance. Finally, there are ethical
+concerns associated with the deployment of RAG models, particularly in terms of bias and transparency.
+Biases in Al and LLM have been a well-researched and evolving field with researchers identifying
+different types of biases not limited to Gender, socio-economic class, or even educational background
+(Gupta et. al. 2024; Ranjan et. al., 2024). While RAG has the potential to reduce biases by retrieving
+more balanced information, there is still the risk of amplifying biases present in the retrieved sources
+
+===== PAGE 5 =====
+
+(Binns, 2018). Furthermore, ensuring transparency in how retrieval results are selected and used in
+generation is crucial for maintaining trust in these systems.
+1.7 Scope of the Survey
+This paper aims to provide a comprehensive survey of RAG models, covering their evolution, key
+architectural components, recent research in this area, current challenges and limitations of RAG, and
+future research direction.
+2: Core Components and Architectural Overview of RAG Systems
+2.1 Overview of RAG Models
+Retrieval-augmented generation (RAG) is an advanced hybrid model architecture that augments natural
+language generation (NLG) with external retrieval mechanisms to enhance the model's knowledge base.
+Traditional large language models (LLMs) such as GPT-3 and BERT, which are pre-trained on vast
+corpora, rely entirely on their internal representations of knowledge, making them susceptible to issues
+like hallucinations—where the models generate plausible but incorrect information. These models cannot
+efficiently update their knowledge bases without retraining, making them less practical for dynamic,
+knowledge-intensive tasks like open-domain question answering and fact verification (Brown, T., et al.
+2020). To overcome these limitations, the paper (Lewis et al. 2020) proposed the RAG architecture, which
+retrieves real-time, relevant external documents to ground the generated text in factual information.
+The RAG model incorporates two key components:
+1. Retriever: This retrieves the most relevant documents from a corpus using techniques such as
+dense passage retrieval (DPR) (Karpukhin et. al. 2020) or traditional BM25 algorithms.
+2.
+Generator: It synthesizes the retrieved documents into coherent, contextually relevant
+responses.
+RAG's strength lies in its ability to leverage external knowledge dynamically, allowing it to outperform
+generative models like GPT-3 and knowledge-grounded systems like BERT, which rely on static datasets.
+In open-domain question answering, RAG has been demonstrated to be highly effective, consistently
+retrieving relevant information and improving the factual accuracy of the generated responses (Guu, K., et
+al. 2020). In addition to knowledge retrieval, RAG models excel at updating knowledge bases. Since the
+model fetches external documents for each query, it requires no retraining to incorporate the latest
+information. This flexibility makes RAG models particularly suitable for domains where information is
+constantly evolving, such as medical research, financial news, and legal proceedings. Furthermore,
+studies have shown that RAG models achieve superior results in a variety of knowledge-intensive tasks,
+including document summarization and, knowledge-grounded dialogues
+2.2 Retriever Mechanisms in RAG Systems
+The retriever in RAG systems is essential for fetching relevant documents from an external corpus.
+Effective retrieval ensures that the model's output is grounded in accurate information. Several retrieval
+mechanisms are commonly used, ranging from traditional methods like BM25 to more sophisticated
+techniques like Dense Passage Retrieval (DPR).
+
+===== PAGE 6 =====
+
+2.2.1 BM25
+BM25 is a well-established information retrieval algorithm that uses the term frequency-inverse document
+frequency (TF-IDF) to rank documents according to relevance. Despite being a classical method, BM25
+remains a strong baseline for many modern retrieval systems, including those used in RAG models.
+BM25 calculates the relevance score of a document based on how frequently a query term appears in the
+document while adjusting for the document's length and the frequency of the term across the corpus
+(Robertson et. al. 2009). While BM25 is effective for keyword matching, it has limitations in understanding
+semantic meaning. For example, BM25 cannot capture the relationships between words and tends to
+perform poorly on more complex, natural language queries that require an understanding of context.
+Despite this limitation, BM25 is still widely used because of its simplicity and efficiency. BM25 is effective
+for tasks involving simpler, keyword-based queries, although more modern retrieval models like DPR tend
+to outperform it in semantically complex tasks.
+2.2.2 Dense Passage Retrieval (DPR)
+Dense Passage Retrieval (DPR), introduced by Karpukhin et al. (2020), represents a more modern
+approach to information retrieval. It uses a dense vector space in which both the query and the
+documents are encoded into high-dimensional vectors. DPR employs a bi-encoder architecture, where
+the query and documents are encoded separately, allowing for efficient nearest-neighbor search (Xiong
+et. al. 2020). Unlike BM25, DPR excels at capturing semantic similarity between the query and
+documents, making it highly effective for open-domain question-answering tasks. The strength of DPR
+lies in its ability to retrieve relevant information based on semantic meaning rather than keyword
+matching. By training the retriever on a large corpus of question-answer pairs, DPR can find documents
+that are contextually related to the query, even when the query and the document do not share exact
+terms. Recent research has further improved DPR by integrating it with pre-trained language models and
+an example is LLM adapted for the dense RetrievAl approach (Li et. al. 2023)
+2.2.3 REALM (Retrieval-Augmented Language Model)
+Another significant advancement in retrieval mechanisms for RAG models is REALM (Guu et al. (2020).
+REALM integrates retrieval into the language model's pre-training process, ensuring that the retriever is
+optimized alongside the generator for downstream tasks. The key innovation in REALM is that it learns to
+retrieve documents that improve the model's performance on specific tasks, such as question answering
+or document summarization. During training, REALM updates both the retriever and the generator,
+ensuring that the retrieval process is optimized for the generation task. REALM's retriever is trained to
+identify documents that are not only relevant to the query but also helpful for generating accurate and
+coherent responses. As a result, REALM significantly improves the quality of generated responses,
+particularly in tasks that require external knowledge. Recent studies have demonstrated that REALM
+outperforms both BM25 and DPR in certain knowledge-intensive tasks, particularly when retrieval is
+tightly coupled with generation.
+The core of RAG lies in the quality of retrieved passages, but many current methods rely on
+similarity-based retrieval (Mallen et al. 2022). Self-RAG (Asai et al. 2023b), and REPLUG (Shi et al.,
+2023) have advanced by leveraging LLMs to enhance retrieval capabilities, achieving more adaptive
+retrieval. After initial retrieval, cross-encoder models are used to re-rank the retrieved results by jointly
+encoding the query and each retrieved document to compute relevance scores. These models provide
+more context-aware retrieval at the cost of higher computational overhead. Pointwise and Pairwise
+Ranking, often based on Learning-to-Rank (LTR) algorithms, are used to assign relevance scores to
+
+===== PAGE 7 =====
+
+systems utilize self-attention within the LLM to manage context and relevance across different parts of the
+input and retrieved text. Cross-attention mechanisms are used when integrating retrieved information into
+the generative model, ensuring that the most relevant pieces of information are emphasized during
+generation.
+2.3 Generator Mechanisms in RAG Systems
+In Retrieval-Augmented Generation (RAG) systems, the generator mechanism plays a crucial role in
+producing the final output by integrating retrieved information with the input query. After the retrieval
+component pulls relevant knowledge from external sources, the generator synthesizes this information
+into coherent, contextually appropriate responses. The Large Language Model (LLM) serves as the
+backbone of the generator, which ensures the generated text is fluent, accurate, and aligned with the
+original query.
+2.3.1 T5 (Text-to-Text Transfer Transformer)
+T5 (Text-to-Text Transfer Transformer) (Raffel et al. 2020) is one of the most commonly used models for
+generation tasks in RAG systems. T5 is versatile in its approach, framing every NLP task as a text-to-text
+task. This uniform framework allows T5 to be fine-tuned for a wide range of tasks, including
+question-answering, summarization, and dialogue generation. By integrating retrieval with generation,
+T5-based RAG models have been shown to outperform traditional generative models like GPT-3 and
+BART on several benchmarks, including the Natural Questions dataset and the TriviaQA dataset.
+Moreover, T5's ability to handle complex multi-task learning makes it a popular choice for RAG systems
+that need to tackle a diverse range of knowledge-intensive tasks.
+2.3.2 BART
+BART (Bidirectional and Auto-Regressive Transformer), introduced by Lewis et al. (2020), is another
+prominent generative model used in RAG systems. BART is particularly well-suited for tasks involving text
+generation from noisy inputs, such as summarization and open-domain question answering. As a
+denoising autoencoder, BART can reconstruct corrupted text sequences, making it robust for tasks that
+require the generation of coherent, factual outputs from incomplete or noisy data. When paired with a
+retriever in a RAG system, BART has been shown to improve the factual accuracy of generated text by
+grounding it in external knowledge. Studies have demonstrated that BART-based RAG models achieve
+state-of-the-art results in various knowledge-intensive tasks, including dialogue generation and news
+summarization.
+3. Retrieval-Augmented Generation Models Across Different Modalities
+3.1 Text-Based RAG Models: Text-based RAG models represent the most mature and widely
+researched category. These models leverage textual data for both retrieval and generation tasks,
+enabling applications such as question-answering, summarization, and conversational agents.
+Transformer architectures, such as BERT (Devlin et al., 2019) and T5 (Raffel et al., 2020), are
+foundational in text-based RAG models. These models utilize self-attention mechanisms to capture
+contextual relationships within text, which enhances both retrieval accuracy and generation fluency.
+Dense retrieval models, such as those using dense embeddings from BERT, offer superior performance
+compared to traditional sparse methods like TF-IDF. Dense retrievers (Karpukhin et al. 2020), leverage
+dense representations to retrieve relevant documents more effectively. Recent advancements focus on
+integrating retrieval and generation into a single training pipeline. REALM (Guu et al., 2020) is an
+
+===== PAGE 8 =====
+
+example of such an end-to-end model that jointly optimizes retrieval and generation processes, improving
+overall task performance.
+3.2 Audio-Based RAG Models: Audio-based RAG models extend the principles of retrieval-augmented
+generation to the audio modality, enabling applications such as speech recognition, audio summarization,
+and conversational agents in voice interfaces. Audio data is often represented using embeddings derived
+from pre-trained models like Wav2Vec 2.0 (Baevski et al., 2020). These embeddings serve as input to
+retrieval and generation components, enabling the model to handle audio data effectively.
+3.3 Video-Based RAG Models: Video-based RAG models incorporate both visual and textual
+information to enhance performance in tasks such as video understanding, captioning, and retrieval.
+Video data is represented using embeddings from models like I3D (Xie et. al. 2017) or TimeSformer
+(Bertasius et al. 2021). These embeddings capture temporal and spatial features essential for effective
+retrieval and generation.
+3.4 Multimodal RAG Models: Multimodal RAG models integrate data from multiple modalities—text,
+audio, video, and images—to provide a more holistic approach to retrieval and generation tasks. Models
+like Flamingo (Alayrac et al., 2022) integrate multiple modalities into a unified framework, enabling
+simultaneous processing of text, images, and videos. Techniques for cross-modal retrieval involve
+retrieving relevant information across different modalities (Li. et. al. 2023).
+Multimodal capabilities enhance the versatility and efficiency of RAG across various applications."
+Retrieval as generation" (Wang et. al. 2024) extends the Retrieval-Augmented Generation (RAG)
+framework to multimodal applications by incorporating text-to-image and image-to-text retrieval. Utilizing a
+large dataset of paired images and text descriptions, the system accelerates image generation when user
+queries align with stored text descriptions ("retrieval as generation"). The image-to-text functionality
+allows users to engage in discussions based on input images.
+Focus on relevant and accurate retrievals:
+Focus on Efficiency and Scalability:
+Dense Retrieval: using embeddings to
+Efficient Retrieval: Focus on developing
+represent documents and queries in a
+more efficient retrieval techniques to reduce
+common vector space.
+latency and improve scalability.
+Hybrid Retrieval: Combine different retrieval
+Hybrid Architectures: Combine different
+methods are explored to improve accuracy
+RAG components to optimize performance.
+and efficiency.
+Explainable RAG: Techniques are
+Contextualized Retrieval: Consider the
+developed to make RAG systems more
+context of the query and the retrieved
+explainable and transparent.
+documents are developed.
+Early Stages:
+Integration with Large Language Models:
+The concept of retrieval-augmented
+RAG systems are integrated with large
+generation emerges as a way to improve
+language models (LLMs) like GPT-3 to
+the quality of generated text by
+enhance generation quality and coherence.
+incorporating external knowledge. Simple
+RAG systems are extended to handle
+retrieval-based models are developed, often
+multimodal data, such as images, videos,
+using keyword matching or TF-IDF to
+and audio.
+retrieve relevant documents.
+Figure 3: Timeline of the evolution of the RAG system and its components
+
+===== PAGE 9 =====
+
+4. Recent Advancement in the field:
+There has been significant advancement in this field and this section intends to capture key findings of a
+few important recent papers. A novel agentic Retrieval-Augmented Generation (RAG) framework (Ravuru
+et. al. 2024) employs a hierarchical, multi-agent architecture where specialized sub-agents, using smaller
+pre-trained language models (SLMs), are fine-tuned for specific time series tasks. The master agent
+delegates tasks to these sub-agents, who retrieve relevant prompts from a shared knowledge repository.
+In this modular, multi-agent approach, the authors achieve state-of-the-art performance demonstrating
+improved flexibility and effectiveness over task-specific methods in time series analysis. RULE (Xia et. al.
+2024), a multimodal Retrieval-Augmented Generation (RAG) framework designed to improve the
+factuality of medical Vision-Language Models (Med-LVLM), addresses challenges in medical RAG by
+introducing a calibrated selection strategy to control factuality risk, and, by developing a preference
+optimization strategy to balance the model's intrinsic knowledge with retrieved contexts, proving its
+effectiveness in enhancing factual accuracy in Med-LVLM systems. METRAG (Gan et. al. 2024), a
+multi-layered, thoughts-enhanced retrieval-augmented generation framework, integrates LLM supervision
+to generate utility-oriented thoughts and combines document similarity with utility for improved
+performance. It also incorporates a task-adaptive summarizer to produce compact thoughts. Using the
+multi-layered thoughts from these stages, an LLM generates knowledge-augmented content,
+demonstrating superior performance on knowledge-intensive tasks compared to traditional approaches.
+Distractor document is
+LA-RAG (Li et. al., 2024)
+HyPA-RAG (Kalra et. al., 2024)
+SFR-RAG (Nguyen et. al., 2024)
+MemoRAG (Qian et. al., 2024)
+Self-Route (Li et. al. 2024)
+NLLB-E5 (Acharya et. Al., 2024)
+RULE (Xia et. al. 2024)
+METRAG (Gan et. al. 2024)
+RAFT (Zhang et. al. 2024)
+Recent Trends in RAG
+MK Summary (Mombaerts et. al. 2024)
+CommunityKG-RAG (Chang et. al. 2024)
+RAPTOR (Sarthi et. al. 2024)
+FILCO (Wang et. al. 2023)
+Self-RAG (Asai et. al. 2023)
+RAGTruth (Niu et. Al., 2023)
+NoMIRACL (Thakur et. Al., 2023)
+TRAQ (Li et. al., 2023)
+FABULA (Ranade et. al., 2023)
+Figure 4: Evolving Trends in RAG captured from research papers
+
+===== PAGE 10 =====
+
+one of the key traits of Retrieval Augmented Fine-Tuning (RAFT) (Zhang et. al. 2024) where the model is
+trained to disregard irrelevant, distractor documents and instead cite directly from relevant sources. This
+process, combined with a chain-of-thought reasoning style, enhances the model's reasoning capabilities.
+RAFT demonstrates consistent performance improvements in domain-specific RAG tasks, including
+PubMed, HotpotQA, and Gorilla datasets, serving as a post-training enhancement for LLMs. FILCO
+(Wang et. al. 2023) , a method designed to enhance the quality of context provided to generative models
+in tasks like open-domain question answering and fact verification, addresses issues of over- or
+under-reliance on retrieved passages, which can lead to problems such as hallucinations in the generated
+outputs. The method improves context quality by identifying useful context through lexical and
+information-theoretic approaches and training context filtering models to refine retrieved contexts during
+test time. Reflection Token is a key attribute of Self-reflective Retrieval Augmented-Generation (Self-RAG)
+(Asai et. al. 2023), a novel framework designed to improve the factual accuracy of large language models
+(LLMs) by combining retrieval with self-reflection. Unlike traditional methods that retrieve and incorporate
+a fixed number of passages, Self-RAG adaptively retrieves relevant passages and uses reflection tokens
+to evaluate and refine its responses, allowing the model to adjust its behavior according to task-specific
+needs and has shown superior performance in open-domain question-answering, reasoning, fact
+verification, and long-form generation tasks. Intelligence and effectiveness of RAG are dependent a lot on
+the quality of retrieval and more meta-data understanding of the repository would enhance the
+effectiveness of the RAG system. A novel data-centric Retrieval-Augmented Generation (RAG) workflow
+advances
+beyond
+the
+traditional
+retrieve-then-read
+mode
+and
+employs
+a
+prepare-then-rewrite-then-retrieve-then-read framework, enhancing LLMs by integrating contextually
+relevant, time-critical, or domain-specific information. Key innovations include generating metadata,
+synthetic Questions and Answers (QA), and introducing the Meta Knowledge Summary (MK Summary)
+for clusters of documents (Mombaerts et. al. 2024). A recent paper introduces CommunityKG-RAG
+(Chang et. al. 2024), a zero-shot framework that integrates community structures within Knowledge
+Graphs (KGs) into Retrieval-Augmented Generation (RAG) systems. This approach enhances the
+accuracy and contextual relevance of fact-checking by utilizing multi-hop connections within KGs,
+outperforming traditional methods without requiring additional domain-specific training. The RAPTOR
+model (Sarthi et. al. 2024) introduces a hierarchical approach to retrieval-augmented language models,
+addressing limitations in traditional methods that retrieve only short, contiguous text chunks. RAPTOR
+forms a summary tree to retrieve information at varying abstraction levels by recursively embedding,
+clustering, and summarizing text. Experiments demonstrate RAPTOR's superior performance, especially
+in question-answering tasks requiring complex reasoning. When paired with GPT-4, RAPTOR improves
+accuracy on the QuALITY benchmark by 20%.
+This advancement in RAG further proves the utility of the RAG system however recent LLM launches that
+support long-term context have significantly shown improved performance. A recent study (Li et. al. 2024)
+compared the efficiency of Retrieval Augmented Generation (RAG) and long-context (LC) Large
+Language Models (LLMs), such as Gemini-1.5 and GPT-4. While LC models outperform RAG when
+adequately resourced, RAG's cost-efficiency remains advantageous. To balance performance and cost,
+the paper introduces Self-Route. This method dynamically directs queries to either RAG or LC based on
+model self-reflection, optimizing both computation cost and performance. This study offers valuable
+insights into the optimal application of RAG and LC in handling long-context tasks. Nguyen et. al., 2024
+introduce SFR-RAG , a small but highly efficient Retrieval Augmented Generation (RAG) model, which is
+designed to enhance the integration of external contextual information into Large Language Models
+(LLMs) while minimizing hallucinations. LA-RAG (Li et. al., 2024), a novel Retrieval-Augmented
+Generation (RAG) paradigm designed to enhance Automatic Speech Recognition (ASR) in large
+language models (LLMs). One of the key benefits of LA-RAG is its ability to leverage fine-grained
+token-level speech data stores alongside a speech-to-speech retrieval mechanism, improving ASR
+
+===== PAGE 11 =====
+
+accuracy by incorporating LLM in-context learning (ICL). The study focuses on datasets of Mandarin and
+various Chinese dialects, demonstrating significant accuracy improvements, particularly in managing
+accent variations, which have historically been a challenge for existing speech encoders. The findings
+highlight LA-RAG's potential to advance ASR technology, offering a more robust solution for diverse
+acoustic conditions. Large Language Models (LLMs) face challenges in Al legal and policy contexts due
+to outdated knowledge and hallucinations. HyPA-RAG (Kalra et. al., 2024), a Hybrid Parameter-Adaptive
+Retrieval-Augmented Generation system, improves accuracy by using adaptive parameter tuning and
+hybrid retrieval strategies. Tested on NYC Local Law 144 (LL144), HyPA-RAG demonstrates enhanced
+correctness and contextual precision, addressing the complexities of legal texts. MemoRAG (Qian et. al.,
+2024) introduces a novel Retrieval-Augmented Generation (RAG) paradigm designed to overcome the
+limitations of traditional RAG systems in handling ambiguous or unstructured knowledge. MemoRAG's
+dual-system architecture utilizes a lightweight long-range LLM to generate draft answers and guide
+retrieval tools, while a more powerful LLM refines the final output. This framework, optimized for better
+cluing and memory capacity, significantly outperforms conventional RAG models across both complex
+and straightforward tasks. NLLB-E5 (Acharya et. al., 2024) introduces a scalable multilingual retrieval
+model aimed at addressing the challenges faced in supporting multiple languages, particularly
+low-resource languages like Indic languages. By leveraging the NLLB encoder and a distillation approach
+from the E5 multilingual retriever, NLLB-E5 enables zero-shot retrieval across languages without the need
+for multilingual training data. Evaluations on benchmarks such as Hindi-BEIR showcase its robust
+performance, highlighting task-specific challenges and advancing multilingual information access for
+global inclusivity.
+5. Current Challenges and Limitations in Retrieval-Augmented Generation (RAG):
+This section intends to highlight the current challenges and limitations of RAG considering the current
+landscape of the system and this would shape the future research directions in the field.
+Scalability and Efficiency: One of the primary challenges for RAG models is scalability. As retrieval
+components rely on external databases, handling vast and dynamically growing datasets requires efficient
+retrieval algorithms. High computational costs and memory requirements also make it difficult to deploy
+RAG models in real-time or resource-constrained environments (Shi et al. 2023), (Asai et al. 2023b).
+Retrieval Quality and Relevance: Ensuring the quality and relevance of retrieved documents remains a
+significant concern. Retrieval models can sometimes return irrelevant or outdated information, which
+negatively affects the accuracy of the generated output. Improving retrieval precision, especially for
+long-form content generation, remains an active area of research (Mallen et al. 2022), (Shi et al. 2023).
+Bias and Fairness: Similar to other machine learning models, RAG systems can exhibit bias due to
+biases present in the retrieved datasets. Retrieval-based models may amplify harmful biases in retrieved
+knowledge, leading to biased outputs in a generation. Developing bias mitigation techniques for retrieval
+and generation in tandem is an ongoing challenge.
+Coherence: RAG models often struggle with integrating the retrieved knowledge into coherent,
+contextually relevant text. The alignment between retrieved passages and the generation model's output
+is not always seamless, leading to inconsistencies or factual hallucinations in the final response (Ji et al.
+2022).
+
+===== PAGE 12 =====
+
+Interpretability and Transparency: Like many Al systems, RAG models are often treated as black
+boxes, with limited transparency in how retrieval influences generation. Improving the interpretability of
+these models is crucial to fostering trust, especially in critical applications (Roller et al. 2020).
+6. Future Research Directions for Retrieval-Augmented Generation (RAG)
+Retrieval-augmented generation (RAG) represents a significant advancement in natural language
+processing and related fields by combining retrieval and generative mechanisms. This section explores
+key areas for future research, highlighting the potential for innovation and improvement in RAG systems.
+6.1 Enhancing Multimodal Integration: The integration of text, image, audio, and video data in RAG
+models remains an evolving challenge. Future research should focus on improving multimodal fusion
+techniques to enable seamless interaction between different data types. This includes developing
+advanced methods for aligning and synthesizing information across modalities. Recent works (Chen et.
+al. 2022), (Yasunaga et. al. 2022), (Zhu et. al. 2024) have explored multimodal learning, but further
+innovations are needed to enhance the coherence and contextuality of multimodal outputs.Research into
+cross-modal retrieval aims to improve the ability of RAG systems to retrieve relevant information across
+different modalities. For example, combining text-based queries with image or video content retrieval
+could enhance applications such as visual question answering and multimedia search._This is another
+future direction to explore for RAG related research.
+6.2 Scaling and Efficiency: As RAG models are deployed in increasingly large-scale applications,
+scalability becomes a critical concern. Research should focus on developing methods to efficiently scale
+retrieval and generation processes without compromising performance. Techniques such as distributed
+computing and efficient indexing methods are essential for handling large datasets. Improving the
+efficiency of RAG models involves optimizing both retrieval and generation components to reduce
+computational resources and latency.
+6.3 Personalization and Adaptation: Future RAG models should focus on personalizing retrieval
+processes to cater to individual user preferences and contexts. This involves developing techniques to
+adapt retrieval strategies based on user history, behaviour, and preferences. Enhancing the contextual
+adaptation of RAG models by deeper understanding of the context and sentiments of query (Gupta et. al.
+2024) and the repository of ducments is crucial for improving the relevance of generated responses.
+Research should explore methods for dynamic adjustment of retrieval and generation processes based
+on the evolving context of interactions. This includes incorporating user feedback and contextual cues into
+the RAG pipeline.
+6.4 Ethical and Privacy Considerations: Addressing biases (Shrestha et. al. 2024), (Gupta et. al. 2024)
+in general and specifics to RAG models is a critical area for future research. As RAG systems are
+deployed in diverse applications, ensuring fairness and mitigating biases in retrieved and generated
+content is essential._Future RAG research should focus on privacy-preserving techniques to protect
+sensitive information during retrieval and generation. This includes developing methods for secure data
+handling and privacy-aware retrieval strategies. Interpretability of model is also a critical area to focus
+upon as a part of on going research in improving RAG.
+6.5 Cross-Lingual and Low-Resource Languages: Expanding RAG technology to support multiple
+languages ( Chirkova et. al. 2024), especially low-resource languages, is a promising direction. Future
+
+===== PAGE 13 =====
+
+relevant results across different languages._Enhancing RAG models to effectively support low-resource
+languages involves developing methods to retrieve and generate content with limited training data.
+Research should focus on techniques for transfer learning and data augmentation to improve
+performance in underrepresented languages.
+6.6 Advanced Retrieval Mechanisms: Future RAG research should explore dynamic retrieval
+mechanisms that adapt to changing query patterns and content requirements. This includes developing
+models that can dynamically update their retrieval strategies based on new information and evolving user
+needs. Investigating hybrid retrieval approaches that combine various retrieval strategies, such as dense
+and sparse retrieval, could enhance the effectiveness of RAG systems. Research should explore how to
+integrate different retrieval methods to achieve optimal performance for diverse tasks.
+6.7 Integration with Emerging Technologies: Integrating RAG models with brain-computer interfaces
+(BCls) could lead to novel applications in human-computer interaction and assistive technologies.
+Research should explore how RAG systems can leverage BCl data to enhance user experience and
+generate context-aware responses.The integration of RAG with AR and VR technologies presents
+opportunities for creating immersive and interactive experiences. Future research should investigate how
+RAG models can be used to enhance AR and VR applications by providing contextually relevant
+information and interactions.
+7. Conclusion
+Retrieval-Augmented Generation (RAG) has undergone significant evolution, with extensive research
+dedicated to improving retrieval effectiveness and enhancing coherent generation to minimize
+hallucinations. From its early iterations to recent advancements, RAG has been instrumental in integrating
+external knowledge into Large Language Models (LLMs), thereby boosting accuracy and reliability. In
+particular, recent domain-specific work has showcased RAG's potential in specialized areas such as
+legal, medical, and low-resource language applications, highlighting its adaptability and scope. However,
+despite these advances, this paper identifies clear gaps that remain unresolved. Challenges such as the
+integration of ambiguous or unstructured information, effective handling of domain-specific contexts, and
+the high computational overhead of complex retrieval tasks still persist. These limitations constrain the
+broader applicability of RAG systems, particularly in diverse and dynamic real-world environments. The
+future research directions outlined in this paper—ranging from improving retrieval mechanisms to
+enhancing context management and ensuring scalability—will serve as a critical guide for the next phase
+of innovation in this space. By addressing these gaps, the next generation of RAG models has the
+potential to drive more reliable, efficient, and domain-adaptable LLM systems, further pushing the
+boundaries of what is possible in retrieval-augmented Al applications.
+
+===== PAGE 14 =====
+
+References:
+Acharya, A., Murthy, R., Kumar, V., & Sen, J. (2024). NLLB-E5: A Scalable Multilingual Retrieval Model.
+ArXiv. /abs/2409.05401
+Alayrac, J., Donahue, J., Luc, P., Miech, A., Barr, I., Hasson, Y., Lenc, K., Mensch, A., Millican, K.,
+Reynolds, M., Ring, R., Rutherford, E., Cabi, S., Han, T., Gong, Z., Samangooei, S., Monteiro, M.,
+Menick, J., Borgeaud, S., . . . Simonyan, K. (2022). Flamingo: A Visual Language Model for Few-Shot
+Learning. ArXiv. /abs/2204.14198
+Asai, A., Wu, Z., Wang, Y., Sil, A., & Hajishirzi, H. (2023). Self-RAG: Learning to retrieve, generate, and
+critique through self-reflection. arXiv preprint arXiv:2310.11511.
+Baevski, A., Zhou, H., Mohamed, A., & Auli, M. (2020). Wav2vec 2.0: A Framework for Self-Supervised
+Learning of Speech Representations. ArXiv. /abs/2006.11477
+Bertasius, G., Wang, H., & Torresani, L. (2021). Is Space-Time Attention All You Need for Video
+Understanding? ArXiv. /abs/2102.05095
+Binns, R. (2018). Fairness in machine learning: Lessons from political philosophy. Proceedings of the
+2018 Conference on Fairness, Accountability, and Transparency (pp. 149-159).
+Borgeaud, S., Mensch, A., Hoffmann, J., Cai, T., Rutherford, E., Millican, K., Driessche, G. V., Lespiau, J.,
+Damoc, B., Clark, A., Casas, D. D., Guy, A., Menick, J., Ring, R., Hennigan, T., Huang, S., Maggiore, L.,
+Jones, C., Cassirer, A., . . . Sifre, L. (2021). Improving language models by retrieving from trillions of
+tokens. ArXiv. /abs/2112.04426
+Brown, T., et al. (2020). "Language Models are Few-Shot Learners." arXiv preprint arXiv:2005.14165.
+Chang, R., & Zhang, J. (2024). CommunityKG-RAG: Leveraging Community Structures in Knowledge
+Graphs for Advanced Retrieval-Augmented Generation in Fact-Checking. ArXiv. /abs/2408.08535
+Chen, D., Fisch, A., Weston, J., & Bordes, A. (2017). Reading Wikipedia to answer open-domain
+questions. In Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics
+(Volume 1: Long Papers) (pp. 1870-1879).
+Chen, W., Hu, H., Chen, X., Verga, P., & Cohen, W. W. (2022). MuRAG: Multimodal Retrieval-Augmented
+Generator for Open Question Answering over Images and Text. ArXiv. /abs/2210.02928
+Chirkova, N., Rau, D., Déjean, H., Formal, T., Clinchant, S., & Nikoulina, V. (2024). Retrieval-augmented
+generation in multilingual settings. ArXiv. /abs/2407.01463
+Dai, Z., & Callan, J. (2019). Context-Aware Sentence/Passage Term Importance Estimation For First
+Stage Retrieval. ArXiv. /abs/1910.10687
+Devlin, J., Chang, M. W., Lee, K., & Toutanova, K. (2019). BERT: Pre-training of deep bidirectional
+transformers for language understanding. In Proceedings of the 2019 Conference of the North American
+Chapter of the Association for Computational Linguistics: Human Language Technologies (pp.
+4171-4186).
+
+===== PAGE 15 =====
+
+Devlin, J., Chang, M., Lee, K., & Toutanova, K. (2018). BERT: Pre-training of Deep Bidirectional
+Transformers for Language Understanding. ArXiv. /abs/1810.04805
+Gan, C., Yang, D., Hu, B., Zhang, H., Li, S., Liu, Z., Shen, Y., Ju, L., Zhang, Z., Gu, J., Liang, L., & Zhou,
+J. (2024). Similarity is Not All You Need: Endowing Retrieval Augmented Generation with Multi Layered
+Thoughts. ArXiv. /abs/2405.19893
+Gatt, A., & Krahmer, & E. (2018). Survey of the state of the art in natural language generation: Core tasks,
+applications, and evaluation. Journal of Artificial Intelligence Research, 61, 65-170.
+Gupta, S., & Ranjan, R. (2024). Evaluation of LLMs Biases Towards Elite Universities: A Persona-Based
+Exploration. ArXiv. /abs/2407.12801
+Gupta, S., Ranjan, R., & Singh, S. N. (2024). Comprehensive Study on Sentiment Analysis: From
+Rule-based to modern LLM based system. ArXiv. /abs/2409.09989
+Guu, J., Lee, K., & Pasupat, P. (2020). Retrieval-augmented generation for knowledge-intensive NLP
+tasks. arXiv preprint. https://arxiv.org/abs/2002.08909
+Guu, K., Lee, K., Tung, Z., Pasupat, P., & Chang, M. (2020). REALM: Retrieval-augmented language
+model pre-training. In Proceedings of the 37th International Conference on Machine Learning (pp.
+3929-3938).
+Han, S., Pool, J., Tran, J., & Dally, W. J. (2015). Learning both weights and connections for efficient
+neural network. In Advances in Neural Information Processing Systems (pp. 1135-1143).
+Izacard, G., & Grave, E. (2021). Leveraging passage retrieval with generative models for open domain
+question answering. In Proceedings of the 16th Conference of the European Chapter of the Association
+for Computational Linguistics: Main Volume (pp. 874-880).
+Ji, Z., Lee, N., Frieske, R., Yu, T., Su, D., Xu, Y., Ishii, E., Bang, Y., Chen, D., Dai, W., Chan, H. S.,
+Madotto, A., & Fung, P. (2022). Survey of Hallucination in Natural Language Generation. ArXiv.
+https://doi.org/10.1145/3571730
+Kalra, R., Wu, Z., Gulley, A., Hilliard, A., Guan, X., Koshiyama, A., & Treleaven, P. (2024). HyPA-RAG: A
+Hybrid Parameter Adaptive Retrieval-Augmented Generation System for Al Legal and Policy Applications.
+ArXiv./abs/2409.09046
+Karpukhin, V., Oguz, B., Min, S., & Yih, W. (2020). Dense passage retrieval for open-domain question
+answering. arXiv preprint. https://arxiv.org/abs/2004.04906
+Karpukhin, V., Oguz, B., Min, S., Lewis, P., Wu, L., Edunov, S., Chen, D. & Yih, W. T. (2020). Dense
+passage retrieval for open-domain question answering. In Proceedings of the 2020 Conference on
+Empirical Methods in Natural Language Processing (EMNLP) (pp. 6769-6781).
+Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., ... & Riedel, S. (2020).
+Retrieval-augmented generation for knowledge-intensive NLP tasks. In Proceedings of the 34th
+International Conference on Neural Information Processing System (pp. 9459-9474).
+
+===== PAGE 16 =====
+
+Li, C., Liu, Z., Xiao, S., & Shao, Y. (2023). Making Large Language Models A Better Foundation For
+Dense Retrieval. ArXiv. /abs/2312.15503
+Li, F., Zhu, L., Wang, T., Li, J., Zhang, Z., & Shen, H. T. (2023). Cross-Modal Retrieval: A Systematic
+Review of Methods and Future Directions. ArXiv. /abs/2308.14263
+Li, S., Shang, H., Wei, D., Guo, J., Li, Z., He, X., Zhang, M., & Yang, H. (2024). LA-RAG:Enhancing
+LLM-based ASR Accuracy with Retrieval-Augmented Generation. ArXiv. /abs/2409.08597
+Li, S., Park, S., Lee, I., & Bastani, O. (2023). TRAQ: Trustworthy Retrieval Augmented Question
+Answering via Conformal Prediction. ArXiv. /abs/2307.04642
+Li, Z., Li, C., Zhang, M., Mei, Q., & Bendersky, M. (2024). Retrieval Augmented Generation or
+Long-Context LLMs? A Comprehensive Study and Hybrid Approach. ArXiv. /abs/2407.16833
+Liu, Z., Wang, H., Niu, Z., Wu, H., Che, W., & Liu, T. (2020). Towards Conversational Recommendation
+over Multi-Type Dialogs. ArXiv. /abs/2005.03954
+Mallen, A., Asai, A., Zhong, V., Das, R., Khashabi, D., & Hajishirzi, H. (2022). When Not to Trust
+Language Models: Investigating Effectiveness of Parametric and Non-Parametric Memories. ArXiv.
+/abs/2212.10511
+Mombaerts, L., Ding, T., Banerjee, A., Felice, F., Taws, J., & Borogovac, T. (2024). Meta Knowledge for
+Retrieval Augmented Large Language Models. ArXiv. /abs/2408.09017
+Nguyen, X., Pandit, S., Purushwalkam, S., Xu, A., Chen, H., Ming, Y., Ke, Z., Savarese, S., Xong, C., &
+Joty, S. (2024). SFR-RAG: Towards Contextually Faithful LLMs. ArXiv. /abs/2409.09916
+Niu, C., Wu, Y., Zhu, J., Xu, S., Shum, K., Zhong, R., Song, J., & Zhang, T. (2023). RAGTruth: A
+Hallucination Corpus for Developing Trustworthy Retrieval-Augmented Language Models. ArXiv.
+/abs/2401.00396
+Qian, H., Zhang, P., Liu, Z., Mao, K., & Dou, Z. (2024). MemoRAG: Moving towards Next-Gen RAG Via
+Memory-Inspired Knowledge Discovery. ArXiv. /abs/2409.05591
+Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., & Sutskever, I. (2019). Language models are
+unsupervised multitask learners. OpenAl Blog, 1(8), 9.
+Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou, Y., Li, W., & Liu, P. J. (2019).
+Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer. ArXiv. /abs/1910.10683
+Ranade, P., & Joshi, A. (2023). FABULA: Intelligence Report Generation Using Retrieval-Augmented
+Narrative Construction. ArXiv. https://doi.org/10.1145/3625007.3627505
+Ranjan, R., Gupta, S., & Singh, S. N. (2024). A Comprehensive Survey of Bias in LLMs: Current
+Landscape and Future Directions. ArXiv. /abs/2409.16430
+Ravuru, C., Sakhinana, S. S., & Runkana, V. (2024). Agentic Retrieval-Augmented Generation for Time
+Series Analysis. ArXiv. /abs/2408.14484
+
+===== PAGE 17 =====
+
+Robertson, S.G., & Zaragoza,H., (2009). The Probabilistic Relevance Framework: BM25 and Beyond,
+Foundations and Trends in Information Retrieval, 3(4), pp. 333-389.
+Roller, S., Dinan, E., Goyal, N., Ju, D., Williamson, M., Liu, Y., Xu, J., Ott, M., Shuster, K., Smith, E. M.,
+Boureau, Y., & Weston, J. (2020). Recipes for building an open-domain chatbot. ArXiv. /abs/2004.13637
+Salton, G., Wong, A., & Yang, C. S. (1975). A vector space model for automatic indexing.
+Communications of the ACM, 18(11), 613-620.
+Sanh, V., Debut, L., Chaumond, J., & Wolf, T. (2019). DistilBERT, a distilled version of BERT: Smaller,
+faster, cheaper and lighter. ArXiv. /abs/1910.01108
+Sarthi, P., Abdullah, S., Tuli, A., Khanna, S., Goldie, A., & Manning, C. D. (2024). RAPTOR: Recursive
+Abstractive Processing for Tree-Organized Retrieval. ArXiv. /abs/2401.18059
+Shi, W., Min, S., Yasunaga, M., Seo, M., James, R., Lewis, M., Zettlemoyer, L., & Yih, W.-T. (2023).
+REPLUG: Retrieval-augmented black-box language models. arXiv preprint arXiv:2301.12652.
+Shrestha, R., Zou, Y., Chen, Q., Li, Z., Xie, Y., & Deng, S. (2024). FairRAG: Fair Human Generation via
+Fair Retrieval Augmentation. ArXiv. /abs/2403.19964
+Sutskever, I., Vinyals, O., & Le, Q. V. (2014). Sequence to sequence learning with neural networks. In
+Advances in Neural Information Processing Systems (pp. 3104-3112).
+Thakur, N., Bonifacio, L., Zhang, X., Ogundepo, O., Kamalloo, E., Li, X., Liu, Q., Chen, B.,
+Rezagholizadeh, M., & Lin, J. (2023). NoMIRACL: Knowing When You Don't Know for Robust Multilingual
+Retrieval-Augmented Generation. ArXiv. /abs/2312.11361
+Thakur, N., Reimers, N., Ruckl'e, A., Srivastava, A., & Gurevych, I. (2021). BEIR: A Heterogenous
+Benchmark for Zero-shot Evaluation of Information Retrieval Models. ArXiv, abs/2104.08663.
+Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I.
+(2017). Attention is all you need. In Advances in Neural Information Processing Systems (pp. 5998-6008).
+Wang, X., Wang, Z., Gao, X., Zhang, F., Wu, Y., Xu, Z., Shi, T., Wang, Z., Li, S., Qian, Q., Yin, R., Lv, C.,
+Zheng, X., & Huang, X. (2024). Searching for Best Practices in Retrieval-Augmented Generation. ArXiv.
+/abs/2407.01219
+Wang, Z., Araki, J., Jiang, Z., Parvez, M. R., & Neubig, G. (2023). Learning to Filter Context for
+Retrieval-Augmented Generation. ArXiv. /abs/2311.08377
+Xia, P., Zhu, K., Li, H., Zhu, H., Li, Y., Li, G., Zhang, L., & Yao, H. (2024). RULE: Reliable Multimodal RAG
+for Factuality in Medical Vision Language Models. ArXiv. /abs/2407.05131
+Xie, S., Sun, C., Huang, J., Tu, Z., & Murphy, K. (2017). Rethinking Spatiotemporal Feature Learning:
+Speed-Accuracy Trade-offs in Video Classification. ArXiv. /abs/1712.04851
+Xiong, L., Xiong, C., Li, Y., Tang, K., Liu, J., Bennett, P., Ahmed, J., & Overwijk, A. (2020). Approximate
+Nearest Neighbor Negative Contrastive Learning for Dense Text Retrieval. ArXiv. /abs/2007.00808
+
+===== PAGE 18 =====
+
+Yasunaga, M., Aghajanyan, A., Shi, W., James, R., Leskovec, J., Liang, P., Lewis, M., Zettlemoyer, L., &
+Yih, W. (2022). Retrieval-Augmented Multimodal Language Modeling. ArXiv. /abs/2211.12561
+Zhang, T., Patil, S. G., Jain, N., Shen, S., Zaharia, M., Stoica, I., & Gonzalez, J. E. (2024). RAFT:
+Adapting Language Model to Domain Specific RAG. ArXiv. /abs/2403.10131
+Zhu, Y., Ren, C., Xie, S., Liu, S., Ji, H., Wang, Z., Sun, T., He, L., Li, Z., Zhu, X., & Pan, C. (2024).
+REALM: RAG-Driven Enhancement of Multimodal Electronic Health Records Analysis via Large
+Language Models. ArXiv. /abs/2402.07016
